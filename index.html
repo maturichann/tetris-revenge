@@ -331,9 +331,16 @@ function pickT(t){
   document.getElementById('a-cancel').classList.remove('hid');
   render();
 }
+// 各ブロックのユニークな回転パターン（重複排除）
+const UROT={O:[0],I:[0,1],S:[0,1],Z:[0,1],T:[0,1,2,3],J:[0,1,2,3],L:[0,1,2,3]};
 function bRots(t){
   const row=document.getElementById('rt-row');ck(row);
-  for(let ro=0;ro<4;ro++){
+  const rots=UROT[t];
+  if(rots.length===1){
+    // 1パターンしかない→回転選択自体を非表示、rot=0固定
+    sRt=0;document.getElementById('rt-row').style.display='none';return;
+  }
+  for(const ro of rots){
     const b=document.createElement('div');b.className='rt'+(ro===sRt?' sel':'');b.dataset.r=ro;
     const c=document.createElement('canvas');c.width=42;c.height=42;
     dMini(c,t,ro);b.appendChild(c);
